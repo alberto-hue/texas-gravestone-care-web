@@ -3,495 +3,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catálogo de monumentos y memoriales | Texas Gravestone Care</title>
+<title>Catálogo completo | Texas Gravestone Care</title>
 <meta name="description" content="Explora nuestro catálogo completo de lápidas, monumentos, bancas, columbarios y mausoleos en granito. Navega por categoría, color y diseño.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 <style>
-  :root{
-    --navy:#1b3a5c;
-    --navy-dark:#102539;
-    --stone-100:#f7f5f1;
-    --stone-200:#ece8e0;
-    --stone-300:#d8d2c6;
-    --ink:#2a2a28;
-    --ink-soft:#5b5950;
-    --tx-blue:#13315c;
-    --tx-red:#a8233a;
-    --gold:#b08d4f;
-    --radius:14px;
-    --shadow:0 10px 30px rgba(20,30,45,.12);
+  /* ---- Estilos propios del catálogo, construidos sobre el sistema de diseño del sitio ---- */
+  .catalog-hero {
+    padding-top: 164px;
+    padding-bottom: 64px;
+    background: var(--black-granite);
   }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    font-family:'Inter',sans-serif;
-    color:var(--ink);
-    background:var(--stone-100);
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.brand,.cat-title{font-family:'Quicksand',sans-serif;}
+  .catalog-hero .wrap { position: relative; }
+  .catalog-hero h1 { color: var(--cream-stone); margin-bottom: 18px; }
+  .catalog-hero p.lead { color: rgba(244,241,234,0.72); margin-bottom: 0; }
 
-  a{color:inherit;}
+  .catalog-filterbar {
+    background: var(--cream-stone);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 84px;
+    z-index: 40;
+    padding: 22px 0;
+  }
+  .catalog-search {
+    width: 100%;
+    padding: 13px 18px;
+    border: 1px solid rgba(28,30,31,0.2);
+    border-radius: 2px;
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    background: #fff;
+    margin-bottom: 14px;
+  }
+  .catalog-search:focus { outline: none; border-color: var(--gold-aged); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    border: 1px solid rgba(28,30,31,0.2);
+    background: transparent;
+    border-radius: 2px;
+    padding: 8px 16px;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--slate-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--black-granite); color: var(--black-granite); }
+  .chip.active { background: var(--black-granite); border-color: var(--black-granite); color: var(--cream-stone); }
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    background:var(--navy);
-    color:#fff;
-    position:sticky;
-    top:0;
-    z-index:40;
-    box-shadow:0 2px 14px rgba(0,0,0,.18);
+  .catalog-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 56px;
+    padding-top: 56px;
+    align-items: start;
   }
-  .topbar-inner{
-    max-width:1280px;
-    margin:0 auto;
-    padding:14px 24px;
-    display:flex;
-    align-items:center;
-    gap:18px;
-    justify-content:space-between;
+  .catalog-sidebar {
+    position: sticky;
+    top: 200px;
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    padding-right: 8px;
   }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-    font-size:1.05rem;
-    letter-spacing:.02em;
-    white-space:nowrap;
+  .sidebar-group { margin-bottom: 26px; }
+  .sidebar-group h3 {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 10px;
   }
-  .brand .badge{
-    width:36px;height:36px;border-radius:50%;
-    border:1.5px solid rgba(255,255,255,.8);
-    display:flex;align-items:center;justify-content:center;
-    font-size:.65rem;font-weight:700;
+  .sidebar-link {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--slate);
+    padding: 6px 0;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -12px;
+    cursor: pointer;
   }
-  .back-link{
-    font-size:.85rem;
-    opacity:.85;
-    text-decoration:none;
-    border-bottom:1px solid transparent;
-    transition:opacity .2s;
-  }
-  .back-link:hover{opacity:1;border-color:rgba(255,255,255,.6);}
-  .phone-pill{
-    background:rgba(255,255,255,.12);
-    border-radius:999px;
-    padding:8px 16px;
-    font-size:.85rem;
-    font-weight:600;
-    text-decoration:none;
-    white-space:nowrap;
-  }
+  .sidebar-link:hover { color: var(--black-granite); }
+  .sidebar-link.active { color: var(--black-granite); font-weight: 600; border-left-color: var(--gold-aged); }
 
-  /* ---------- Hero ---------- */
-  .hero{
-    background:linear-gradient(165deg,var(--navy) 0%,var(--navy-dark) 70%);
-    color:#fff;
-    padding:56px 24px 40px;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
+  .catalog-content { min-width: 0; padding-bottom: 120px; }
+  .cat-section { margin-bottom: 80px; scroll-margin-top: 220px; }
+  .cat-section .eyebrow { display: block; margin-bottom: 14px; }
+  .cat-section h2 { font-size: 1.9rem; margin-bottom: 10px; }
+  .cat-section .cat-subtitle { color: var(--slate-soft); max-width: 720px; margin-bottom: 24px; }
+  .sizes-box {
+    background: var(--cream-stone-dim);
+    border-left: 3px solid var(--gold-aged);
+    padding: 14px 18px;
+    font-size: 0.85rem;
+    color: var(--slate-soft);
+    margin-bottom: 28px;
+    line-height: 1.6;
   }
-  .hero::before{
-    content:"";
-    position:absolute;inset:0;
-    background-image:radial-gradient(circle at 20% 20%, rgba(255,255,255,.05), transparent 40%),
-                      radial-gradient(circle at 80% 70%, rgba(255,255,255,.04), transparent 45%);
-  }
-  .hero h1{
-    font-size:clamp(1.8rem,4vw,2.6rem);
-    margin:0 0 10px;
-    font-weight:700;
-    position:relative;
-  }
-  .hero p{
-    max-width:600px;
-    margin:0 auto;
-    color:rgba(255,255,255,.82);
-    font-size:1rem;
-    line-height:1.55;
-    position:relative;
-  }
+  .sizes-box strong { color: var(--black-granite); }
 
-  /* ---------- Search / filter bar ---------- */
-  .filterbar{
-    max-width:1280px;
-    margin:-26px auto 0;
-    padding:0 24px;
-    position:relative;
-    z-index:10;
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
   }
-  .filterbar-card{
-    background:#fff;
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:18px 20px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    align-items:center;
+  .catalog-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .search-input{
-    flex:1 1 240px;
-    border:1.5px solid var(--stone-300);
-    border-radius:999px;
-    padding:11px 18px;
-    font-size:.92rem;
-    font-family:inherit;
-    outline:none;
-    transition:border-color .2s;
+  .catalog-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(28,30,31,0.12); }
+  .catalog-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--cream-stone-dim); }
+  .catalog-card-body { padding: 12px 14px 16px; }
+  .catalog-card-color { font-size: 0.84rem; font-weight: 600; color: var(--black-granite); line-height: 1.35; }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
   }
-  .search-input:focus{border-color:var(--navy);}
-  .chip-row{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    flex:1 1 100%;
-    margin-top:4px;
-  }
-  .chip{
-    border:1.5px solid var(--stone-300);
-    background:#fff;
-    border-radius:999px;
-    padding:7px 15px;
-    font-size:.82rem;
-    font-weight:600;
-    cursor:pointer;
-    color:var(--ink-soft);
-    transition:all .18s;
-    white-space:nowrap;
-  }
-  .chip:hover{border-color:var(--navy);color:var(--navy);}
-  .chip.active{
-    background:var(--navy);
-    border-color:var(--navy);
-    color:#fff;
+  .swatch { cursor: pointer; transition: transform 0.18s ease; }
+  .swatch:hover { transform: translateY(-2px); }
+  .swatch img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid var(--line); }
+  .swatch-name { font-size: 0.76rem; font-weight: 600; padding: 8px 2px; text-align: center; color: var(--slate); }
+  .color-group-label { font-size: 0.8rem; font-weight: 700; color: var(--bronze); margin: 26px 0 12px; }
+  .color-group-label:first-child { margin-top: 0; }
+
+  .mobile-cat-toggle {
+    display: none;
+    width: 100%;
+    text-align: left;
+    background: var(--cream-stone-dim);
+    border: 1px solid var(--line);
+    padding: 12px 16px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+    cursor: pointer;
   }
 
-  /* ---------- Layout: sidebar + content ---------- */
-  .layout{
-    max-width:1280px;
-    margin:0 auto;
-    padding:32px 24px 80px;
-    display:grid;
-    grid-template-columns:240px 1fr;
-    gap:32px;
-    align-items:start;
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(28,30,31,0.94);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 24px;
   }
-  .sidebar{
-    position:sticky;
-    top:84px;
-    background:#fff;
-    border-radius:var(--radius);
-    padding:18px;
-    box-shadow:var(--shadow);
-    max-height:calc(100vh - 110px);
-    overflow-y:auto;
+  .lightbox.open { display: flex; }
+  .lightbox-inner { max-width: 920px; max-height: 90vh; width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .lightbox-img { max-width: 100%; max-height: 72vh; object-fit: contain; background: #fff; }
+  .lightbox-caption { color: var(--cream-stone); margin-top: 18px; font-family: var(--serif); font-size: 1.15rem; text-align: center; }
+  .lightbox-sub { color: var(--gold-aged); font-size: 0.82rem; margin-top: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 28px;
+    color: var(--cream-stone); font-size: 2rem; line-height: 1;
+    background: none; border: none; cursor: pointer; opacity: 0.8;
   }
-  .sidebar h3{
-    margin:0 0 10px;
-    font-size:.75rem;
-    text-transform:uppercase;
-    letter-spacing:.07em;
-    color:var(--ink-soft);
-    font-family:'Inter',sans-serif;
-    font-weight:700;
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(244,241,234,0.1); border: 1px solid rgba(244,241,234,0.2);
+    color: var(--cream-stone); font-size: 1.5rem;
+    width: 46px; height: 46px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s ease;
   }
-  .sidebar-group{margin-bottom:18px;}
-  .sidebar-group:last-child{margin-bottom:0;}
-  .sidebar-link{
-    display:block;
-    padding:7px 10px;
-    border-radius:8px;
-    font-size:.86rem;
-    color:var(--ink);
-    text-decoration:none;
-    margin-bottom:2px;
-    transition:background .15s, color .15s;
-    cursor:pointer;
-  }
-  .sidebar-link:hover{background:var(--stone-200);}
-  .sidebar-link.active{
-    background:var(--navy);
-    color:#fff;
-    font-weight:600;
-  }
+  .lightbox-nav:hover { background: rgba(244,241,234,0.22); }
+  .lightbox-prev { left: 18px; }
+  .lightbox-next { right: 18px; }
 
-  /* ---------- Main content ---------- */
-  .content{min-width:0;}
-  .section-block{
-    margin-bottom:54px;
-    scroll-margin-top:90px;
-  }
-  .section-block .group-label{
-    font-size:.74rem;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    color:var(--gold);
-    font-weight:700;
-    margin-bottom:4px;
-  }
-  .cat-title{
-    font-size:1.5rem;
-    font-weight:700;
-    color:var(--navy-dark);
-    margin:0 0 4px;
-  }
-  .cat-subtitle{
-    color:var(--ink-soft);
-    font-size:.92rem;
-    line-height:1.5;
-    max-width:760px;
-    margin:0 0 18px;
-  }
-  .sizes-box{
-    background:var(--stone-200);
-    border-left:3px solid var(--gold);
-    border-radius:8px;
-    padding:12px 16px;
-    font-size:.82rem;
-    color:var(--ink-soft);
-    margin-bottom:20px;
-    line-height:1.6;
-  }
-  .sizes-box strong{color:var(--ink);}
-
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-    gap:18px;
-  }
-  .card{
-    background:#fff;
-    border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:0 3px 10px rgba(20,30,45,.07);
-    cursor:pointer;
-    transition:transform .2s, box-shadow .2s;
-  }
-  .card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 24px rgba(20,30,45,.14);
-  }
-  .card-img{
-    width:100%;
-    aspect-ratio:4/3;
-    object-fit:cover;
-    background:var(--stone-200);
-    display:block;
-  }
-  .card-img.contain{object-fit:contain;padding:10px;}
-  .card-body{padding:12px 14px 14px;}
-  .card-color{
-    font-size:.84rem;
-    font-weight:600;
-    color:var(--ink);
-    line-height:1.35;
-  }
-
-  /* color swatch grid (colors page) */
-  .color-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-    gap:14px;
-  }
-  .swatch{
-    background:#fff;
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 3px 8px rgba(20,30,45,.07);
-    cursor:pointer;
-    transition:transform .18s;
-  }
-  .swatch:hover{transform:translateY(-2px);}
-  .swatch-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
-  .swatch-name{
-    font-size:.74rem;
-    font-weight:600;
-    padding:8px 10px;
-    text-align:center;
-    color:var(--ink);
-  }
-  .color-group-label{
-    font-size:.78rem;
-    font-weight:700;
-    color:var(--navy);
-    margin:22px 0 10px;
-  }
-  .color-group-label:first-child{margin-top:0;}
-
-  .empty-state{
-    text-align:center;
-    padding:60px 20px;
-    color:var(--ink-soft);
-  }
-  .empty-state svg{margin-bottom:10px;opacity:.5;}
-
-  /* ---------- Lightbox ---------- */
-  .lightbox{
-    position:fixed;inset:0;
-    background:rgba(15,22,32,.92);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    padding:24px;
-  }
-  .lightbox.open{display:flex;}
-  .lightbox-inner{
-    max-width:900px;
-    max-height:90vh;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-  .lightbox-img{
-    max-width:100%;
-    max-height:72vh;
-    object-fit:contain;
-    border-radius:10px;
-    box-shadow:0 20px 50px rgba(0,0,0,.4);
-    background:#fff;
-  }
-  .lightbox-caption{
-    color:#fff;
-    margin-top:16px;
-    text-align:center;
-    font-size:1rem;
-    font-weight:600;
-  }
-  .lightbox-sub{
-    color:rgba(255,255,255,.65);
-    font-size:.84rem;
-    margin-top:4px;
-  }
-  .lightbox-close{
-    position:absolute;
-    top:20px;right:24px;
-    color:#fff;
-    font-size:2rem;
-    line-height:1;
-    cursor:pointer;
-    background:none;
-    border:none;
-    opacity:.8;
-  }
-  .lightbox-close:hover{opacity:1;}
-  .lightbox-nav{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    background:rgba(255,255,255,.12);
-    border:none;
-    color:#fff;
-    font-size:1.6rem;
-    width:46px;height:46px;
-    border-radius:50%;
-    cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:background .2s;
-  }
-  .lightbox-nav:hover{background:rgba(255,255,255,.25);}
-  .lightbox-prev{left:16px;}
-  .lightbox-next{right:16px;}
-
-  /* ---------- Mobile nav toggle ---------- */
-  .mobile-nav-toggle{
-    display:none;
-    background:var(--stone-200);
-    border:none;
-    border-radius:8px;
-    padding:10px 14px;
-    font-weight:600;
-    font-size:.85rem;
-    margin-bottom:16px;
-    width:100%;
-    text-align:left;
-    cursor:pointer;
-  }
-
-  /* ---------- Footer note ---------- */
-  .cta-footer{
-    background:var(--navy-dark);
-    color:#fff;
-    text-align:center;
-    padding:50px 24px;
-  }
-  .cta-footer h2{font-size:1.5rem;margin:0 0 10px;}
-  .cta-footer p{color:rgba(255,255,255,.75);margin:0 0 22px;}
-  .cta-btn{
-    background:var(--gold);
-    color:#1b1303;
-    font-weight:700;
-    padding:13px 30px;
-    border-radius:999px;
-    text-decoration:none;
-    display:inline-block;
-    transition:transform .2s;
-  }
-  .cta-btn:hover{transform:translateY(-2px);}
-
-  @media (max-width:880px){
-    .layout{grid-template-columns:1fr;}
-    .sidebar{
-      position:static;
-      max-height:none;
-      display:none;
-    }
-    .sidebar.open{display:block;}
-    .mobile-nav-toggle{display:block;}
-    .back-link{display:none;}
-  }
-  @media (max-width:520px){
-    .topbar-inner{padding:12px 16px;}
-    .brand span.brand-text{font-size:.92rem;}
-    .hero{padding:40px 18px 32px;}
-    .layout{padding:24px 16px 60px;}
+  @media (max-width: 980px) {
+    .catalog-hero { padding-top: 110px; }
+    .catalog-filterbar { top: 0; }
+    .catalog-layout { grid-template-columns: 1fr; gap: 0; }
+    .catalog-sidebar { position: static; max-height: none; display: none; }
+    .catalog-sidebar.open { display: block; margin-bottom: 24px; }
+    .mobile-cat-toggle { display: block; }
   }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <div class="badge">TgC</div>
-      <span class="brand-text">Texas Gravestone Care</span>
+<!-- ============ HEADER (idéntico al del sitio principal) ============ -->
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      Texas Gravestone Care
+      <span>Empresa familiar de monumentos</span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#memoriales">Memoriales</a>
+      <a href="index.html#granito">Granito</a>
+      <a href="index.html#testimonios">Resenas</a>
+      <a href="index.html#cobertura">Cobertura</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <div class="header-actions">
+      <a href="tel:2815032400" class="header-phone">281-503-2400</a>
+      <a href="index.html#contacto" class="btn btn-outline-dark">Pide tu cotizacion</a>
     </div>
-    <a class="back-link" href="https://texas-gravestone-care-web.pages.dev/#granito">← Volver al sitio</a>
-    <a class="phone-pill" href="tel:2815032400">281-503-2400</a>
+    <button class="mobile-toggle" aria-label="Abrir menu" aria-expanded="false"><span></span></button>
   </div>
-</div>
+</header>
 
-<div class="hero">
-  <h1>Catálogo de monumentos y memoriales</h1>
-  <p>Explora cada diseño, color de granito y tamaño disponible directamente aquí — sin descargar nada. Toca cualquier imagen para verla en grande.</p>
-</div>
+<!-- ============ HERO DEL CATALOGO ============ -->
+<section class="catalog-hero">
+  <div class="wrap">
+    <span class="eyebrow">Catalogo completo</span>
+    <h1 style="font-size:clamp(2.2rem,4.5vw,3.4rem);">Cada diseno, color y tamano disponible.</h1>
+    <p class="lead">Explora el catalogo completo directamente aqui, sin descargar nada. Toca cualquier imagen para verla en grande.</p>
+  </div>
+</section>
 
-<div class="filterbar">
-  <div class="filterbar-card">
-    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, color o tipo de diseño…">
+<!-- ============ BUSCADOR Y FILTROS ============ -->
+<div class="catalog-filterbar">
+  <div class="wrap">
+    <input type="text" id="searchInput" class="catalog-search" placeholder="Buscar por nombre, color o tipo de diseno...">
     <div class="chip-row" id="groupChips"></div>
   </div>
 </div>
 
-<div class="layout">
-  <button class="mobile-nav-toggle" id="mobileNavToggle">☰ Ver categorías</button>
-  <nav class="sidebar" id="sidebar"></nav>
-  <main class="content" id="content"></main>
+<!-- ============ CATALOGO ============ -->
+<div class="wrap">
+  <div class="catalog-layout">
+    <button class="mobile-cat-toggle" id="mobileNavToggle">&#9776; Ver categorias</button>
+    <nav class="catalog-sidebar" id="sidebar"></nav>
+    <main class="catalog-content" id="content"></main>
+  </div>
 </div>
 
-<div class="cta-footer">
-  <h2>¿Listo para honrar su memoria?</h2>
-  <p>Cuéntanos sobre tu ser querido y te guiaremos por cada opción, sin presión y sin prisas.</p>
-  <a class="cta-btn" href="https://texas-gravestone-care-web.pages.dev/#contacto">Solicitar cotización</a>
+<!-- ============ CTA BAND (igual al del sitio) ============ -->
+<section class="cta-band">
+  <div class="wrap">
+    <h2>&iquest;Listo para honrar su memoria?</h2>
+    <p>Cuentanos sobre tu ser querido y te guiaremos por cada opcion, sin presion y sin prisas.</p>
+    <a href="index.html#contacto" class="btn btn-primary">Comienza tu cotizacion</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER (idéntico al del sitio principal) ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Texas Gravestone Care</div>
+        <p>Una empresa familiar de monumentos, de segunda generacion, que sirve a familias, cementerios, iglesias y funerarias en todo Texas.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Productos</h5>
+        <a href="index.html#memoriales">Memoriales</a>
+        <a href="index.html#memoriales">Mausoleos</a>
+        <a href="index.html#memoriales">Columbarios</a>
+        <a href="catalogo.html">Catalogo completo</a>
+      </div>
+      <div class="footer-col">
+        <h5>Servicios</h5>
+        <a href="index.html#servicios">Grabado</a>
+        <a href="index.html#servicios">Limpieza y reparacion</a>
+        <a href="index.html#servicios">Modificaciones y cortes</a>
+        <a href="index.html#servicios">Instalacion</a>
+      </div>
+      <div class="footer-col">
+        <h5>Empresa</h5>
+        <a href="index.html#cobertura">Area de servicio</a>
+        <a href="index.html#testimonios">Resenas</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a href="tel:2815032400">281-503-2400</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Texas Gravestone Care. Todos los derechos reservados.</span>
+      <span>17218 Porter Ln, Porter, TX 77365</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ STICKY CTA MOBILE ============ -->
+<div class="sticky-cta">
+  <a href="tel:2815032400" class="btn btn-outline-light">Llamar</a>
+  <a href="index.html#contacto" class="btn btn-primary">Cotizar</a>
 </div>
 
+<!-- ============ LIGHTBOX ============ -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">&times;</button>
   <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
@@ -511,34 +315,29 @@
   const groupChips = document.getElementById('groupChips');
   const searchInput = document.getElementById('searchInput');
 
-  // Build ordered list of sections: colors first, then categories grouped
   const allCategories = CATALOG.categories;
   const groupOrder = [];
   allCategories.forEach(c => { if(!groupOrder.includes(c.group)) groupOrder.push(c.group); });
 
-  // ---------- Sidebar ----------
   function buildSidebar(){
     let html = `<div class="sidebar-group">
       <h3>Colores</h3>
-      <a class="sidebar-link" data-target="sec-colors" href="#sec-colors">Colores de granito</a>
+      <a class="sidebar-link" data-target="sec-colors">Colores de granito</a>
     </div>`;
     groupOrder.forEach(group => {
       html += `<div class="sidebar-group"><h3>${group}</h3>`;
       allCategories.filter(c=>c.group===group).forEach(c=>{
-        html += `<a class="sidebar-link" data-target="sec-${c.id}" href="#sec-${c.id}">${c.title}</a>`;
+        html += `<a class="sidebar-link" data-target="sec-${c.id}">${c.title}</a>`;
       });
       html += `</div>`;
     });
     sidebar.innerHTML = html;
   }
 
-  // ---------- Group filter chips ----------
   function buildChips(){
     let html = `<button class="chip active" data-group="all">Todo</button>`;
     html += `<button class="chip" data-group="__colors">Colores</button>`;
-    groupOrder.forEach(g=>{
-      html += `<button class="chip" data-group="${g}">${g}</button>`;
-    });
+    groupOrder.forEach(g=>{ html += `<button class="chip" data-group="${g}">${g}</button>`; });
     groupChips.innerHTML = html;
     groupChips.addEventListener('click', e=>{
       const btn = e.target.closest('.chip');
@@ -550,20 +349,37 @@
   }
 
   function filterByGroup(group){
-    document.querySelectorAll('.section-block').forEach(sec=>{
+    document.querySelectorAll('.cat-section').forEach(sec=>{
       if(group==='all'){ sec.style.display=''; return; }
       if(group==='__colors'){ sec.style.display = sec.id==='sec-colors' ? '' : 'none'; return; }
       sec.style.display = sec.dataset.group===group ? '' : 'none';
     });
   }
 
-  // ---------- Lightbox gallery flattened list ----------
-  let galleryItems = []; // {img, caption, sub}
+  let galleryItems = [];
   let currentIndex = 0;
+  const IMAGE_FOLDERS = ['images', 'imagenes.3', 'imagens.9', 'imagenes.9.1'];
+
+  function imgSrc(filename){ return IMAGE_FOLDERS[0] + '/' + filename; }
+  function onErrorAttr(filename){
+    const tries = IMAGE_FOLDERS.slice(1).map(f => `'${f}/${filename}'`).join(',');
+    return `data-tries="${tries}" data-tryidx="0" onerror="window.__imgFallback(this)"`;
+  }
+  window.__imgFallback = function(imgEl){
+    const tries = (imgEl.dataset.tries || '').split(',').map(s => s.trim().replace(/^'|'$/g,'')).filter(Boolean);
+    let idx = parseInt(imgEl.dataset.tryidx || '0', 10);
+    if(idx < tries.length){
+      imgEl.src = tries[idx];
+      imgEl.dataset.tryidx = idx + 1;
+      const parent = imgEl.closest('.catalog-card, .swatch');
+      if(parent) parent.dataset.img = tries[idx];
+    } else {
+      imgEl.onerror = null;
+    }
+  };
 
   function openLightbox(idx){
     currentIndex = idx;
-    // toma la ruta más reciente (por si el fallback de carpeta ya la actualizó)
     const item = galleryItems[idx];
     if(item.node) item.img = item.node.dataset.img;
     renderLightbox();
@@ -574,8 +390,7 @@
     const imgEl = document.getElementById('lightboxImg');
     imgEl.src = item.img;
     imgEl.onerror = function(){
-      // si la carpeta guardada tampoco sirve aquí, prueba el resto de carpetas conocidas
-      const folders = ['images','imagenes.3','imagens.9','imagenes.9.1'];
+      const folders = IMAGE_FOLDERS;
       const filename = item.img.split('/').pop();
       let i = (imgEl.dataset.lbTry ? parseInt(imgEl.dataset.lbTry,10) : 0) + 1;
       if(i < folders.length){
@@ -605,30 +420,21 @@
     if(e.key==='ArrowRight') document.getElementById('lightboxNext').click();
   });
 
-  // ---------- Build content ----------
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
   function buildContent(){
     let html = '';
-    // Carpetas donde pueden estar las fotos (se prueban en este orden hasta encontrar la imagen)
-    const IMAGE_FOLDERS = ['images', 'imagenes.3', 'imagens.9', 'imagenes.9.1'];
-    function imgSrc(filename){
-      return IMAGE_FOLDERS[0] + '/' + filename;
-    }
-    function onErrorAttr(filename){
-      // Genera el atributo onerror que va probando cada carpeta siguiente si la actual falla
-      const tries = IMAGE_FOLDERS.slice(1).map(f => `'${f}/${filename}'`).join(',');
-      return `data-tries="${tries}" data-tryidx="0" onerror="window.__imgFallback(this)"`;
-    }
-
-    // Colors section
-    html += `<section class="section-block" id="sec-colors" data-group="__colors">
-      <div class="group-label">Materiales</div>
-      <h2 class="cat-title">Colores de granito</h2>
-      <p class="cat-subtitle">Mantenemos variedad de colores y formas en inventario, o podemos pedir una pieza específica. Cada bloque se revisa por imperfecciones antes de convertirse en memorial. Toca un color para verlo en grande.</p>`;
+    html += `<section class="cat-section" id="sec-colors" data-group="__colors">
+      <span class="eyebrow">Materiales</span>
+      <h2>Colores de granito</h2>
+      <p class="cat-subtitle">Mantenemos variedad de colores y formas en inventario, o podemos pedir una pieza especifica. Cada bloque se revisa por imperfecciones antes de convertirse en memorial. Toca un color para verlo en grande.</p>`;
     CATALOG.colors.groups.forEach(g=>{
       html += `<div class="color-group-label">${g.group}</div><div class="color-grid">`;
       g.items.forEach(it=>{
-        html += `<div class="swatch" data-img="${imgSrc(it.img)}" data-cap="${escapeHtml(it.name)}" data-sub="Granito">
-          <img class="swatch-img" src="${imgSrc(it.img)}" alt="${escapeHtml(it.name)}" loading="lazy" ${onErrorAttr(it.img)}>
+        html += `<div class="swatch" data-img="images/${it.img}" data-cap="${escapeHtml(it.name)}" data-sub="Granito">
+          <img src="${imgSrc(it.img)}" alt="${escapeHtml(it.name)}" loading="lazy" ${onErrorAttr(it.img)}>
           <div class="swatch-name">${escapeHtml(it.name)}</div>
         </div>`;
       });
@@ -636,20 +442,19 @@
     });
     html += `</section>`;
 
-    // Product categories
     allCategories.forEach(cat=>{
-      html += `<section class="section-block" id="sec-${cat.id}" data-group="${cat.group}">
-        <div class="group-label">${cat.group}</div>
-        <h2 class="cat-title">${cat.title}</h2>`;
+      html += `<section class="cat-section" id="sec-${cat.id}" data-group="${cat.group}">
+        <span class="eyebrow">${cat.group}</span>
+        <h2>${cat.title}</h2>`;
       if(cat.subtitle) html += `<p class="cat-subtitle">${cat.subtitle}</p>`;
       if(cat.sizes && cat.sizes.length){
-        html += `<div class="sizes-box"><strong>Tamaños disponibles:</strong><br>${cat.sizes.join(' &nbsp;·&nbsp; ')}</div>`;
+        html += `<div class="sizes-box"><strong>Tamanos disponibles:</strong><br>${cat.sizes.join(' &nbsp;&middot;&nbsp; ')}</div>`;
       }
-      html += `<div class="grid">`;
+      html += `<div class="catalog-grid">`;
       cat.items.forEach(it=>{
-        html += `<div class="card" data-img="${imgSrc(it.img)}" data-cap="${escapeHtml(it.color)}" data-sub="${escapeHtml(cat.title)}">
-          <img class="card-img" src="${imgSrc(it.img)}" alt="${escapeHtml(it.color)}" loading="lazy" ${onErrorAttr(it.img)}>
-          <div class="card-body"><div class="card-color">${escapeHtml(it.color)}</div></div>
+        html += `<div class="catalog-card" data-img="images/${it.img}" data-cap="${escapeHtml(it.color)}" data-sub="${escapeHtml(cat.title)}">
+          <img src="${imgSrc(it.img)}" alt="${escapeHtml(it.color)}" loading="lazy" ${onErrorAttr(it.img)}>
+          <div class="catalog-card-body"><div class="catalog-card-color">${escapeHtml(it.color)}</div></div>
         </div>`;
       });
       html += `</div></section>`;
@@ -659,71 +464,42 @@
     attachGalleryHandlers();
   }
 
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  // Si una imagen falla en su carpeta actual, prueba la siguiente carpeta de la lista
-  window.__imgFallback = function(imgEl){
-    const tries = (imgEl.dataset.tries || '').split(',').map(s => s.trim().replace(/^'|'$/g,'')).filter(Boolean);
-    let idx = parseInt(imgEl.dataset.tryidx || '0', 10);
-    if(idx < tries.length){
-      imgEl.src = tries[idx];
-      imgEl.dataset.tryidx = idx + 1;
-      // mantiene sincronizado el contenedor padre para que el lightbox use la misma ruta que funcionó
-      const parent = imgEl.closest('.card, .swatch');
-      if(parent) parent.dataset.img = tries[idx];
-    } else {
-      imgEl.onerror = null; // ya no quedan carpetas que probar, deja de intentar
-    }
-  };
-
   function attachGalleryHandlers(){
-    const nodes = Array.from(document.querySelectorAll('.card, .swatch'));
-    galleryItems = nodes.map(n=>({
-      img:n.dataset.img, caption:n.dataset.cap, sub:n.dataset.sub, node:n
-    }));
-    nodes.forEach((n,i)=>{
-      n.addEventListener('click', ()=>openLightbox(i));
-    });
+    const nodes = Array.from(document.querySelectorAll('.catalog-card, .swatch'));
+    galleryItems = nodes.map(n=>({ img:n.dataset.img, caption:n.dataset.cap, sub:n.dataset.sub, node:n }));
+    nodes.forEach((n,i)=>{ n.addEventListener('click', ()=>openLightbox(i)); });
   }
 
-  // ---------- Search ----------
   searchInput.addEventListener('input', ()=>{
     const q = searchInput.value.trim().toLowerCase();
-    document.querySelectorAll('.section-block').forEach(sec=>{ sec.style.display=''; });
     groupChips.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
     groupChips.querySelector('[data-group="all"]').classList.add('active');
 
     if(!q){
-      document.querySelectorAll('.card, .swatch').forEach(n=>n.style.display='');
-      document.querySelectorAll('.section-block').forEach(s=>s.style.display='');
+      document.querySelectorAll('.catalog-card, .swatch').forEach(n=>n.style.display='');
+      document.querySelectorAll('.cat-section').forEach(s=>s.style.display='');
       return;
     }
-    document.querySelectorAll('.section-block').forEach(sec=>{
+    document.querySelectorAll('.cat-section').forEach(sec=>{
       let anyVisible = false;
-      sec.querySelectorAll('.card, .swatch').forEach(n=>{
+      sec.querySelectorAll('.catalog-card, .swatch').forEach(n=>{
         const cap = (n.dataset.cap||'').toLowerCase();
-        const title = sec.querySelector('.cat-title')?.textContent.toLowerCase() || '';
+        const title = sec.querySelector('h2')?.textContent.toLowerCase() || '';
         const match = cap.includes(q) || title.includes(q);
         n.style.display = match ? '' : 'none';
         if(match) anyVisible = true;
       });
-      // also check if section title itself matches, show all in that case for swatches grid grouping
       sec.style.display = anyVisible ? '' : 'none';
     });
   });
 
-  // ---------- Sidebar nav active state on scroll ----------
   function setupScrollSpy(){
     const links = Array.from(document.querySelectorAll('.sidebar-link'));
     const sections = links.map(l=>document.getElementById(l.dataset.target)).filter(Boolean);
     function onScroll(){
       let activeId = sections[0]?.id;
-      const scrollY = window.scrollY + 120;
-      sections.forEach(sec=>{
-        if(sec.offsetTop <= scrollY) activeId = sec.id;
-      });
+      const scrollY = window.scrollY + 240;
+      sections.forEach(sec=>{ if(sec.offsetTop <= scrollY) activeId = sec.id; });
       links.forEach(l=>l.classList.toggle('active', l.dataset.target===activeId));
     }
     window.addEventListener('scroll', onScroll, {passive:true});
@@ -733,22 +509,19 @@
   sidebar.addEventListener('click', e=>{
     const link = e.target.closest('.sidebar-link');
     if(!link) return;
-    if(window.innerWidth <= 880){
-      sidebar.classList.remove('open');
-    }
+    document.getElementById(link.dataset.target)?.scrollIntoView({behavior:'smooth'});
+    if(window.innerWidth <= 980) sidebar.classList.remove('open');
   });
 
   document.getElementById('mobileNavToggle').addEventListener('click', ()=>{
     sidebar.classList.toggle('open');
   });
 
-  // ---------- Init ----------
   buildSidebar();
   buildChips();
   buildContent();
   setupScrollSpy();
 })();
 </script>
-
 </body>
 </html>
