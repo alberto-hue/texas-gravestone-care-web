@@ -563,12 +563,26 @@
 
   function openLightbox(idx){
     currentIndex = idx;
+    // toma la ruta más reciente (por si el fallback de carpeta ya la actualizó)
+    const item = galleryItems[idx];
+    if(item.node) item.img = item.node.dataset.img;
     renderLightbox();
     document.getElementById('lightbox').classList.add('open');
   }
   function renderLightbox(){
     const item = galleryItems[currentIndex];
-    document.getElementById('lightboxImg').src = item.img;
+    const imgEl = document.getElementById('lightboxImg');
+    imgEl.src = item.img;
+    imgEl.onerror = function(){
+      // si la carpeta guardada tampoco sirve aquí, prueba el resto de carpetas conocidas
+      const folders = ['images','imagenes.3','imagens.9','imagenes.9.1'];
+      const filename = item.img.split('/').pop();
+      let i = (imgEl.dataset.lbTry ? parseInt(imgEl.dataset.lbTry,10) : 0) + 1;
+      if(i < folders.length){
+        imgEl.dataset.lbTry = i;
+        imgEl.src = folders[i] + '/' + filename;
+      }
+    };
     document.getElementById('lightboxCaption').textContent = item.caption;
     document.getElementById('lightboxSub').textContent = item.sub || '';
   }
@@ -594,6 +608,16 @@
   // ---------- Build content ----------
   function buildContent(){
     let html = '';
+    // Carpetas donde pueden estar las fotos (se prueban en este orden hasta encontrar la imagen)
+    const IMAGE_FOLDERS = ['images', 'imagenes.3', 'imagens.9', 'imagenes.9.1'];
+    function imgSrc(filename){
+      return IMAGE_FOLDERS[0] + '/' + filename;
+    }
+    function onErrorAttr(filename){
+      // Genera el atributo onerror que va probando cada carpeta siguiente si la actual falla
+      const tries = IMAGE_FOLDERS.slice(1).map(f => `'${f}/${filename}'`).join(',');
+      return `data-tries="${tries}" data-tryidx="0" onerror="window.__imgFallback(this)"`;
+    }
 
     // Colors section
     html += `<section class="section-block" id="sec-colors" data-group="__colors">
@@ -603,8 +627,8 @@
     CATALOG.colors.groups.forEach(g=>{
       html += `<div class="color-group-label">${g.group}</div><div class="color-grid">`;
       g.items.forEach(it=>{
-        html += `<div class="swatch" data-img="images/${it.img}" data-cap="${escapeHtml(it.name)}" data-sub="Granito">
-          <img class="swatch-img" src="images/${it.img}" alt="${escapeHtml(it.name)}" loading="lazy">
+        html += `<div class="swatch" data-img="${imgSrc(it.img)}" data-cap="${escapeHtml(it.name)}" data-sub="Granito">
+          <img class="swatch-img" src="${imgSrc(it.img)}" alt="${escapeHtml(it.name)}" loading="lazy" ${onErrorAttr(it.img)}>
           <div class="swatch-name">${escapeHtml(it.name)}</div>
         </div>`;
       });
@@ -623,8 +647,8 @@
       }
       html += `<div class="grid">`;
       cat.items.forEach(it=>{
-        html += `<div class="card" data-img="images/${it.img}" data-cap="${escapeHtml(it.color)}" data-sub="${escapeHtml(cat.title)}">
-          <img class="card-img" src="images/${it.img}" alt="${escapeHtml(it.color)}" loading="lazy">
+        html += `<div class="card" data-img="${imgSrc(it.img)}" data-cap="${escapeHtml(it.color)}" data-sub="${escapeHtml(cat.title)}">
+          <img class="card-img" src="${imgSrc(it.img)}" alt="${escapeHtml(it.color)}" loading="lazy" ${onErrorAttr(it.img)}>
           <div class="card-body"><div class="card-color">${escapeHtml(it.color)}</div></div>
         </div>`;
       });
@@ -639,10 +663,25 @@
     return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
+  // Si una imagen falla en su carpeta actual, prueba la siguiente carpeta de la lista
+  window.__imgFallback = function(imgEl){
+    const tries = (imgEl.dataset.tries || '').split(',').map(s => s.trim().replace(/^'|'$/g,'')).filter(Boolean);
+    let idx = parseInt(imgEl.dataset.tryidx || '0', 10);
+    if(idx < tries.length){
+      imgEl.src = tries[idx];
+      imgEl.dataset.tryidx = idx + 1;
+      // mantiene sincronizado el contenedor padre para que el lightbox use la misma ruta que funcionó
+      const parent = imgEl.closest('.card, .swatch');
+      if(parent) parent.dataset.img = tries[idx];
+    } else {
+      imgEl.onerror = null; // ya no quedan carpetas que probar, deja de intentar
+    }
+  };
+
   function attachGalleryHandlers(){
     const nodes = Array.from(document.querySelectorAll('.card, .swatch'));
     galleryItems = nodes.map(n=>({
-      img:n.dataset.img, caption:n.dataset.cap, sub:n.dataset.sub
+      img:n.dataset.img, caption:n.dataset.cap, sub:n.dataset.sub, node:n
     }));
     nodes.forEach((n,i)=>{
       n.addEventListener('click', ()=>openLightbox(i));
